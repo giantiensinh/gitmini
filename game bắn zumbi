@@ -1,0 +1,244 @@
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Tải hình ảnh và âm thanh
+const playerImage = new Image();
+playerImage.src = 'D:/Lap Trinh Wed/game củ chuối/ship.gif';
+
+const monsterImage = new Image();
+monsterImage.src = 'D:/Lap Trinh Wed/game củ chuối/quai-removebg-preview.png';
+
+const backgroundImage = new Image();
+backgroundImage.src = 'D:/Lap Trinh Wed/game củ chuối/backgound.jpg';
+
+const bulletImage = new Image();
+bulletImage.src = 'D:/Lap Trinh Wed/game củ chuối/dan-removebg-preview.png';
+
+// Tải âm thanh
+const shootSound = new Audio('D:/Lap Trinh Wed/game củ chuối/Pop sound effect _ No copyright.mp3');
+const hitSound = new Audio('D:/Lap Trinh Wed/game củ chuối/Bruh sound effect.mp3');
+const backgroundSound = new Audio('assets/background_music.mp3');
+
+// Kiểm tra nếu hình ảnh và âm thanh được tải thành công
+playerImage.onload = function() { console.log('Player image loaded successfully.'); };
+monsterImage.onload = function() { console.log('Monster image loaded successfully.'); };
+backgroundImage.onload = function() { console.log('Background image loaded successfully.'); };
+bulletImage.onload = function() { console.log('Bullet image loaded successfully.'); };
+
+shootSound.oncanplaythrough = function() { console.log('Shoot sound loaded successfully.'); };
+hitSound.oncanplaythrough = function() { console.log('Hit sound loaded successfully.'); };
+backgroundSound.oncanplaythrough = function() { console.log('Background sound loaded successfully.'); };
+
+// Phát âm thanh nền
+backgroundSound.loop = true;
+backgroundSound.play();
+
+let player = {
+    x: canvas.width / 2,
+    y: canvas.height - 60,
+    width: 50,
+    height: 50,
+    speed: 5,
+    power: 10
+};
+
+let monsters = [];
+let bullets = [];
+let keys = {};
+let currentLevel = 1;
+const maxLevel = 10;
+let waveCount = 0;
+let monstersToSpawn = 10;
+let bossSpawned = false;
+let gameWon = false;
+
+// Hàm để kiểm tra khoảng cách giữa hai điểm
+function distance(x1, y1, x2, y2) {
+    return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+}
+
+// Tạo quái vật ngẫu nhiên với khoảng cách tối thiểu
+function spawnMonster() {
+    if (gameWon || bossSpawned) return;
+
+    if (monsters.length < monstersToSpawn) {
+        let monster;
+        let validPosition = false;
+        while (!validPosition) {
+            monster = {
+                x: Math.random() * (canvas.width - 100),
+                y: Math.random() * (canvas.height - 200),
+                width: 100,
+                height: 100,
+                health: 30,  // Health of small monsters
+                maxHealth: 30,
+                speed: 0.1 + 0.01 * currentLevel
+            };
+            validPosition = true;
+            for (let m of monsters) {
+                if (distance(monster.x, monster.y, m.x, m.y) < 150) {
+                    validPosition = false;
+                    break;
+                }
+            }
+        }
+        monsters.push(monster);
+        console.log('Monster spawned:', monster); // Debug log
+    }
+
+    if (monsters.length === 0 && waveCount >= 3) {
+        spawnBoss();
+    }
+}
+
+function spawnBoss() {
+    bossSpawned = true;
+    let boss = {
+        x: canvas.width / 2 - 75,
+        y: 50,
+        width: 150,
+        height: 150,
+        health: 60,  // Health of the boss, takes 6 hits to defeat
+        maxHealth: 60,
+        speed: 0.2
+    };
+    monsters.push(boss);
+    console.log('Boss spawned:', boss); // Debug log
+}
+
+function drawPlayer() {
+    ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+}
+
+function drawMonsters() {
+    for (let monster of monsters) {
+        ctx.drawImage(monsterImage, monster.x, monster.y, monster.width, monster.height);
+
+        let healthBarWidth = monster.width;
+        let healthBarHeight = 5;
+        let healthBarX = monster.x;
+        let healthBarY = monster.y + monster.height + 5;
+
+        let healthRatio = monster.health / monster.maxHealth;
+        ctx.fillStyle = (monster.maxHealth === 60) ? 'orange' : (healthRatio > 0.5 ? 'green' : 'red');
+        ctx.fillRect(healthBarX, healthBarY, healthBarWidth * healthRatio, healthBarHeight);
+
+        ctx.strokeStyle = 'black';
+        ctx.strokeRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+    }
+}
+
+function moveBullets() {
+    for (let bullet of bullets) {
+        bullet.y -= 5;
+    }
+    bullets = bullets.filter(bullet => bullet.y > 0);
+}
+
+function drawBullets() {
+    for (let bullet of bullets) {
+        ctx.drawImage(bulletImage, bullet.x, bullet.y, bullet.width, bullet.height);
+    }
+}
+
+function moveMonsters() {
+    for (let monster of monsters) {
+        monster.y += monster.speed;
+        if (monster.y > canvas.height) {
+            monster.y = -monster.height;
+        }
+    }
+}
+
+function checkCollision() {
+    for (let bullet of bullets) {
+        for (let monster of monsters) {
+            if (bullet.x > monster.x && bullet.x < monster.x + monster.width && bullet.y > monster.y && bullet.y < monster.y + monster.height) {
+                hitSound.play();
+                monster.health -= player.power;
+                bullets = bullets.filter(b => b !== bullet);
+                if (monster.health <= 0) {
+                    monsters = monsters.filter(m => m !== monster);
+                    if (monster.maxHealth === 30) {
+                        waveCount++;
+                    }
+                    if (bossSpawned && monsters.length === 0) {
+                        gameWon = true;
+                        console.log('You Win!'); // Debug log
+                    }
+                    if (!bossSpawned && waveCount === 3) {
+                        spawnBoss();
+                    }
+                }
+                break;
+            }
+        }
+    }
+}
+
+function autoShoot() {
+    if (monsters.length > 0) {
+        bullets.push({
+            x: player.x + player.width / 2 - 5,
+            y: player.y,
+            width: 30,
+            height: 60
+        });
+        shootSound.play();
+    }
+}
+
+setInterval(autoShoot, 500); // Tự động bắn mỗi 500ms
+
+function updateGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground();
+    drawPlayer();
+    moveMonsters();
+    drawMonsters();
+    drawBullets();
+    moveBullets();
+    checkCollision();
+    movePlayer();
+    if (gameWon) {
+        drawWinMessage();
+    }
+}
+
+setInterval(updateGame, 30);
+
+document.addEventListener('keydown', function(event) {
+    keys[event.key] = true;
+});
+
+document.addEventListener('keyup', function(event) {
+    keys[event.key] = false;
+});
+
+function movePlayer() {
+    if (keys['a'] && player.x > 0) {
+        player.x -= player.speed;
+    }
+    if (keys['d'] && player.x + player.width < canvas.width) {
+        player.x += player.speed;
+    }
+    if (keys['w'] && player.y > 0) {
+        player.y -= player.speed;
+    }
+    if (keys['s'] && player.y + player.height < canvas.height) {
+        player.y += player.speed;
+    }
+}
+
+function drawBackground() {
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+}
+
+function drawWinMessage() {
+    ctx.font = '48px serif';
+    ctx.fillStyle = 'yellow';
+    ctx.fillText('You Win!', canvas.width / 2 - 100, canvas.height / 2);
+}
+
+setInterval(spawnMonster, 2000); // Bảo đảm quái vật được tạo thường xuyên
+updateGame(); // Bắt đầu vòng lặp game
