@@ -1,0 +1,133 @@
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Tải hình ảnh
+const playerImage = new Image();
+playerImage.src = 'd:/Tải xuống/1f63efd4-ca27-4a46-b9d1-217f34b55563.gif'; // Đường dẫn đến hình ảnh người chơi
+
+const monsterImage = new Image();
+monsterImage.src = 'd:/Tải xuống/2ec63085215370c81e3ead19b8ac8a15.jpg'; // Đường dẫn đến hình ảnh quái vật
+
+const backgroundImage = new Image();
+backgroundImage.src = ''; // Đường dẫn đến hình ảnh nền
+
+let player = {
+    x: canvas.width / 2,
+    y: canvas.height - 60,
+    width: 50,
+    height: 50,
+    speed: 5
+};
+
+let monsters = [];
+let bullets = [];
+let keys = {};
+
+// Vẽ người chơi
+function drawPlayer() {
+    ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+}
+
+// Vẽ quái vật
+function drawMonsters() {
+    for (let monster of monsters) {
+        ctx.drawImage(monsterImage, monster.x, monster.y, monster.width, monster.height);
+    }
+}
+
+// Vẽ nền
+function drawBackground() {
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+}
+
+// Tạo quái vật ngẫu nhiên
+function spawnMonster() {
+    let monster = {
+        x: Math.random() * (canvas.width - 50),
+        y: 0,
+        width: 50,
+        height: 50
+    };
+    monsters.push(monster);
+}
+
+setInterval(spawnMonster, 1000); // Tạo quái vật mỗi giây
+
+// Di chuyển và vẽ đạn
+function moveBullets() {
+    for (let bullet of bullets) {
+        bullet.y -= 5;
+    }
+    bullets = bullets.filter(bullet => bullet.y > 0);
+}
+
+function drawBullets() {
+    for (let bullet of bullets) {
+        ctx.fillStyle = 'green'; // Màu xanh lá cây
+        ctx.beginPath();
+        ctx.arc(bullet.x, bullet.y, 5, 0, Math.PI * 2); // Vẽ hình tròn
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
+// Kiểm tra va chạm
+function checkCollision() {
+    for (let bullet of bullets) {
+        for (let monster of monsters) {
+            if (bullet.x > monster.x && bullet.x < monster.x + monster.width &&
+                bullet.y > monster.y && bullet.y < monster.y + monster.height) {
+                // Xóa quái vật khi trúng đạn
+                monsters.splice(monsters.indexOf(monster), 1);
+                bullets.splice(bullets.indexOf(bullet), 1);
+                break;
+            }
+        }
+    }
+}
+
+// Cập nhật trò chơi
+function updateGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground();
+    drawPlayer();
+    drawMonsters();
+    drawBullets();
+    moveBullets();
+    checkCollision();
+    movePlayer();
+}
+
+setInterval(updateGame, 30); // Cập nhật trò chơi mỗi 30ms
+
+// Điều khiển người chơi và bắn đạn
+document.addEventListener('keydown', function(event) {
+    keys[event.key] = true;
+});
+
+document.addEventListener('keyup', function(event) {
+    keys[event.key] = false;
+});
+
+function movePlayer() {
+    if (keys['ArrowLeft'] && player.x > 0) {
+        player.x -= player.speed;
+    }
+    if (keys['ArrowRight'] && player.x + player.width < canvas.width) {
+        player.x += player.speed;
+    }
+    if (keys['ArrowUp'] && player.y > 0) {
+        player.y -= player.speed;
+    }
+    if (keys['ArrowDown'] && player.y + player.height < canvas.height) {
+        player.y += player.speed;
+    }
+    if (keys[' ']) {
+        bullets.push({
+            x: player.x + player.width / 2,
+            y: player.y,
+            width: 5,
+            height: 10
+        });
+    }
+}
