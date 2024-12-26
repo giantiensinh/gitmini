@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #87CEEB;
+    }
+    .game-container {
+      display: flex;
+      gap: 20px;
+    }
+    .left-panel, .right-panel {
+      width: 150px;
+    }
+    .game-board {
+      display: grid;
+      grid-template-rows: repeat(20, 30px);
+      grid-template-columns: repeat(10, 30px);
+      gap: 1px;
+      background: #333;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      background: #eee;
+    }
+    .filled {
+      background: #0f0;
+    }
+    .score-board {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <div class="left-panel">
+      <div class="score-board">
+        <p>Score: <span id="score">0</span></p>
+        <p>Level: <span id="level">1</span></p>
+      </div>
+    </div>
+
+    <div class="game-board" id="game-board"></div>
+
+    <div class="right-panel">
+      <p>Next Block:</p>
+      <div id="next-block" style="width: 120px; height: 120px; display: grid; grid-template-rows: repeat(4, 30px); grid-template-columns: repeat(4, 30px); background: #fff; border: 1px solid #000;"></div>
+    </div>
+  </div>
+
+  <script>
+    const boardWidth = 10;
+    const boardHeight = 20;
+    const board = document.getElementById('game-board');
+    const nextBlockBoard = document.getElementById('next-block');
+    const cells = [];
+    let score = 0;
+    let level = 1;
+    let currentBlock;
+    let nextBlock;
+    let currentPosition = { row: 0, col: 4 };
+    const blocks = [
+      [[0, 0], [0, 1], [1, 0], [1, 1]], // Square block
+      [[0, 1], [1, 0], [1, 1], [1, 2]], // T block
+      [[0, 0], [1, 0], [1, 1], [1, 2]], // L block
+      [[0, 2], [1, 0], [1, 1], [1, 2]], // Reverse L block
+      [[0, 0], [0, 1], [1, 1], [1, 2]], // Z block
+      [[0, 1], [0, 2], [1, 0], [1, 1]], // Reverse Z block
+      [[0, 0], [0, 1], [0, 2], [0, 3]]  // Line block
+    ];
+
+    let dropInterval = 1000;
+    let gameInterval;
+
+    function startGame() {
+      initializeBoard();
+      spawnBlock();
+      gameInterval = setInterval(moveBlockDown, dropInterval);
+    }
+
+    // Initialize the board
+    function initializeBoard() {
+      for (let row = 0; row < boardHeight; row++) {
+        for (let col = 0; col < boardWidth; col++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          board.appendChild(cell);
+          cells.push(cell);
+        }
+      }
+
+      for (let i = 0; i < 16; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        nextBlockBoard.appendChild(cell);
+      }
+    }
+
+    // Draw a block
+    function drawBlock(block, position, container = board) {
+      block.forEach(([row, col]) => {
+        const index = (position.row + row) * boardWidth + (position.col + col);
+        if (container === board && index >= 0 && index < cells.length) {
+          cells[index].classList.add('filled');
+        } else if (container === nextBlockBoard) {
+          const nextIndex = row * 4 + col;
+          container.children[nextIndex]?.classList.add('filled');
+        }
+      });
+    }
+
+    // Clear a block
+    function clearBlock(block, position, container = board) {
+      block.forEach(([row, col]) => {
+        const index = (position.row + row) * boardWidth + (position.col + col);
+        if (container === board && index >= 0 && index < cells.length) {
+          cells[index].classList.remove('filled');
+        } else if (container === nextBlockBoard) {
+          const nextIndex = row * 4 + col;
+          container.children[nextIndex]?.classList.remove('filled');
+        }
+      });
+    }
+
+    // Check if position is valid
+    function isValidPosition(block, position) {
+      return block.every(([row, col]) => {
+        const newRow = position.row + row;
+        const newCol = position.col + col;
+        const index = newRow * boardWidth + newCol;
+        return (
+          newRow >= 0 &&
+          newRow < boardHeight &&
+          newCol >= 0 &&
+          newCol < boardWidth &&
+          (!cells[index] || !cells[index].classList.contains('filled'))
+        );
+      });
+    }
+
+    // Move block down
+    function moveBlockDown() {
+      if (isValidPosition(currentBlock, { row: currentPosition.row + 1, col: currentPosition.col })) {
+        clearBlock(currentBlock, currentPosition);
+        currentPosition.row++;
+        drawBlock(currentBlock, currentPosition);
+      } else {
+        lockBlock();
+        clearLines();
+        spawnBlock();
+      }
+    }
+
+    // Lock block in place
+    function lockBlock() {
+      currentBlock.forEach(([row, col]) => {
+        const index = (currentPosition.row + row) * boardWidth + (currentPosition.col + col);
+        if (index >= 0 && index < cells.length) {
+          cells[index].classList.add('filled');
+        }
+      });
+    }
+
+    // Clear full lines
+    function clearLines() {
+      let linesCleared = 0;
+      for (let row = 0; row < boardHeight; row++) {
+        const isFullLine = Array.from({ length: boardWidth }, (_, col) => row * boardWidth + col)
+          .every(index => cells[index].classList.contains('filled'));
+
+        if (isFullLine) {
+          linesCleared++;
+          Array.from({ length: boardWidth }, (_, col) => row * boardWidth + col)
+            .forEach(index => cells[index].classList.remove('filled'));
+
+          for (let r = row - 1; r >= 0; r--) {
+            Array.from({ length: boardWidth }, (_, col) => r * boardWidth + col)
+              .forEach((index, col) => {
+                if (cells[index].classList.contains('filled')) {
+                  cells[index].classList.remove('filled');
+                  cells[index + boardWidth].classList.add('filled');
+                }
+              });
+          }
+        }
+      }
+
+      if (linesCleared > 0) {
+        score += linesCleared * 100;
+        document.getElementById('score').textContent = score;
+
+        if (score >= level * 500) {
+          level++;
+          document.getElementById('level').textContent = level;
+          clearInterval(gameInterval);
+          dropInterval = Math.max(100, dropInterval - 100);
+          gameInterval = setInterval(moveBlockDown, dropInterval);
+        }
+      }
+    }
+
+    // Spawn a new block
+    function spawnBlock() {
+      currentBlock = nextBlock || blocks[Math.floor(Math.random() * blocks.length)];
+      nextBlock = blocks[Math.floor(Math.random() * blocks.length)];
+      currentPosition = { row: 0, col: 4 };
+
+      // Clear and draw the next block preview
+      Array.from(nextBlockBoard.children).forEach(cell => cell.classList.remove('filled'));
+      drawBlock(nextBlock, { row: 0, col: 0 }, nextBlockBoard);
+
+      if (!isValidPosition(currentBlock, currentPosition)) {
+        alert('Game Over!');
+        clearInterval(gameInterval);
+      } else {
+        drawBlock(currentBlock, currentPosition);
+      }
+    }
+
+    // Rotate a block
+    function rotateBlock() {
+      const rotatedBlock = currentBlock.map(([row, col]) => [-col, row]);
+      if (isValidPosition(rotatedBlock, currentPosition)) {
+        clearBlock(currentBlock, currentPosition);
+        currentBlock = rotatedBlock;
+        drawBlock(currentBlock, currentPosition);
+      }
+    }
+
+    // Handle user input
+    document.addEventListener('keydown', (event) => {
+      clearBlock(currentBlock, currentPosition);
+      if (event.key === 'ArrowLeft' && isValidPosition(currentBlock, { row: currentPosition.row, col: currentPosition.col - 1 })) {
+        currentPosition.col--;
+      } else if (event.key === 'ArrowRight' && isValidPosition(currentBlock, { row: currentPosition.row, col: currentPosition.col + 1 })) {
+        currentPosition.col++;
+      } else if (event.key === 'ArrowDown') {
+        moveBlockDown();
+      } else if (event.key === 'ArrowUp') {
+        rotateBlock();
+      }
+      drawBlock(currentBlock, currentPosition);
+    });
+
+    startGame();
+  </script>
+</body>
+</html>
