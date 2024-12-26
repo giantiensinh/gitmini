@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelance UI Designer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        nav {
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            margin-left: 20px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #e63946;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-info a {
+            text-decoration: none;
+            color: #e63946;
+            font-weight: 700;
+        }
+
+        main {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #f9f9f9;
+        }
+
+        .introduction h1 {
+            color: #e63946;
+            font-weight: 700;
+        }
+
+        .introduction h2 {
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .introduction p {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(90deg, #ff7e5f, #e63946);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(90deg, #e63946, #ff7e5f);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .social-icons a img {
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/IMG/doan.png" alt="Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#about">About Me</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="contact-info">
+            <a href="mailto:hello@robertfox.design">hello@robertfox.design</a>
+            <span>(704) 555-0127</span>
+        </div>
+    </header>
+
+    <main>
+        <section class="introduction">
+            <h1>Hey, I'm <span style="color: #e63946;">Robert Fox</span></h1>
+            <h2>Freelance UI Designer & Web Developer</h2>
+            <p>I help businesses grow by crafting amazing web experiences. If you're looking for a designer and developer who likes to get stuff done, let's talk.</p>
+            <a href="#" class="cta-button">See my work ↓</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="#"><img src="/IMG/Twitter-new-logo.jpeg" alt="Twitter"></a>
+            <a href="#"><img src="/IMG/OIP.jpg" alt="Instagram"></a>
+            <a href="#"><img src="/IMG/Facebook.jpg" alt="Facebook"></a>
+        </div>
+        <p>&copy; 2024 Robert Fox. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
