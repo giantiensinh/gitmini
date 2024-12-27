@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+        }
+        header {
+            background: linear-gradient(90deg, #0078D4, #005BB5);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: #005BB5;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #FFD700;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .about-images {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .about-images img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #0078D4;
+            transition: transform 0.3s;
+        }
+        .about-images img:hover {
+            transform: scale(1.1);
+        }
+        h2, h3 {
+            color: #0078D4;
+            margin-bottom: 10px;
+        }
+        ul {
+            padding-left: 20px;
+            list-style: square;
+        }
+        .highlight {
+            background-color: #005BB5;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #005BB5;
+            color: white;
+            margin-top: 40px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+        footer a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About Me</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <section id="about-me">
+            <h2>Who I Am</h2>
+            <p>
+                Hi there! I’m <span class="highlight">Robert Fox</span>, a passionate UI designer and web developer with over 5 years of experience in creating stunning digital experiences. 
+                My journey began with a love for art and technology, which led me to pursue a career where I could combine the two. 
+            </p>
+            <div class="about-images">
+                <img src="https://via.placeholder.com/100" alt="Robert's Photo 1">
+                <img src="https://via.placeholder.com/100" alt="Robert's Photo 2">
+                <img src="https://via.placeholder.com/100" alt="Robert's Photo 3">
+            </div>
+            <h3>What I Do</h3>
+            <ul>
+                <li>Design intuitive user interfaces that captivate and engage users</li>
+                <li>Develop responsive and high-performance websites</li>
+                <li>Collaborate with teams to bring creative ideas to life</li>
+            </ul>
+            <h3>Skills and Tools</h3>
+            <ul>
+                <li>Design Tools: Adobe Photoshop, Figma, Sketch</li>
+                <li>Development: HTML, CSS, JavaScript, React</li>
+                <li>Prototyping and Wireframing</li>
+            </ul>
+            <h3>Fun Facts</h3>
+            <ul>
+                <li>I’m a coffee enthusiast – nothing gets done without a good cup of coffee!</li>
+                <li>In my free time, I enjoy painting and hiking.</li>
+                <li>I once designed a website for a charity event that raised over $50,000!</li>
+            </ul>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 Robert Fox. All Rights Reserved. <a href="privacy.html">Privacy Policy</a></p>
+    </footer>
+</body>
+</html>
