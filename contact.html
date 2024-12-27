@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelance Portfolio</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+
+        header .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        header .logo img {
+            width: 40px;
+            margin-right: 10px;
+        }
+
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        header nav a:hover {
+            color: #ff007f;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-info a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .contact-info span {
+            font-size: 16px;
+            color: #666;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 100px 20px;
+        }
+
+        main h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff007f;
+        }
+
+        main p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .contact-buttons a {
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #ff007f;
+            transition: background-color 0.3s;
+        }
+
+        .contact-buttons a:hover {
+            background-color: #cc0066;
+        }
+
+        .contact-buttons a.secondary {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .contact-buttons a.secondary:hover {
+            background-color: #ddd;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px 0;
+            text-align: center;
+            background-color: #f9f9f9;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+
+        footer a {
+            color: #ff007f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/IMG/doan.png" alt="Logo">
+        </div>
+        <nav>
+            <a href="#about">About Me</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div class="contact-info">
+            <a href="mailto:hello@robertfox.design">hello@robertfox.design</a>
+            <span>(704) 555-0127</span>
+        </div>
+    </header>
+    <main>
+        <h1>I’m currently available for freelance work.</h1>
+        <p>If you’re looking for a designer and developer that likes to get stuff done, let’s talk.</p>
+        <div class="contact-buttons">
+            <a href="mailto:hello@robertfox.design">hello@robertfox.design</a>
+            <a href="tel:7045550127" class="secondary">(704) 555-0127</a>
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 by <a href="#">Your Name</a>. All rights reserved.</p>
+    </footer>
+</body>
+</html>
