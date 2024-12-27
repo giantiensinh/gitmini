@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See My Work</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            background: linear-gradient(to bottom, #f3f4f7, #ffffff);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        header {
+            background: rgb(255, 192, 192);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+        }
+
+        .portfolio {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .portfolio-item h3 {
+            padding: 15px;
+            font-size: 1.5rem;
+            color: #0078D4;
+        }
+
+        .portfolio-item p {
+            padding: 0 15px 15px;
+            color: #666;
+        }
+
+        .cta {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .cta a {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 1rem;
+            color: white;
+            background: #0078D4;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .cta a:hover {
+            background: pink;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #f3f4f7;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Xem Dự Án Của Tôi</h1>
+        <p>Khám phá những dự án tôi đã thực hiện.</p>
+    </header>
+
+    <section class="portfolio">
+        <div class="portfolio-item">
+            <img src="https://via.placeholder.com/300x200" alt="Dự Án 1">
+            <h3>Dự Án 1</h3>
+            <p>Mô tả ngắn gọn về dự án đầu tiên. Đây là một thiết kế UI tuyệt vời.</p>
+        </div>
+        <div class="portfolio-item">
+            <img src="https://via.placeholder.com/300x200" alt="Dự Án 2">
+            <h3>Dự Án 2</h3>
+            <p>Mô tả ngắn gọn về dự án thứ hai. Nó tập trung vào trải nghiệm người dùng.</p>
+        </div>
+        <div class="portfolio-item">
+            <img src="https://via.placeholder.com/300x200" alt="Dự Án 3">
+            <h3>Dự Án 3</h3>
+            <p>Mô tả ngắn gọn về dự án thứ ba. Một giải pháp sáng tạo và hiện đại.</p>
+        </div>
+        <div class="portfolio-item">
+            <img src="https://via.placeholder.com/300x200" alt="Dự Án 4">
+            <h3>Dự Án 4</h3>
+            <p>Mô tả ngắn gọn về dự án thứ tư. Thiết kế độc đáo và hiệu quả.</p>
+        </div>
+    </section>
+
+    <div class="cta">
+        <a href="#">Xem Tất Cả Dự Án</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Robert Fox. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
